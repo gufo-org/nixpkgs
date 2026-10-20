@@ -136,7 +136,7 @@ let
       # TODO: should gpuTargets be set?
       hipfft = self.callPackage ./hipfft { };
 
-      #hiprt = self.callPackage ./hiprt { };
+      hiprt = self.callPackage ./hiprt { };
 
       tensile = pyPackages.callPackage ./tensile {
         inherit (self)
