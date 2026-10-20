@@ -77,9 +77,9 @@ let
     ## packages ##
     // {
 
-      #amdsmi = pyPackages.callPackage ./amdsmi {
-      #  inherit (self) rocmUpdateScript;
-      #};
+      amdsmi = pyPackages.callPackage ./amdsmi {
+        inherit (self) rocmUpdateScript;
+      };
 
       aqlprofile = self.callPackage ./aqlprofile { };
 
