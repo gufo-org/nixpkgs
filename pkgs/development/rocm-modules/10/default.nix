@@ -131,7 +131,7 @@ let
 
       #hipsparse = self.callPackage ./hipsparse { };
 
-      #hipfort = self.callPackage ./hipfort { };
+      hipfort = self.callPackage ./hipfort { };
 
       # TODO: should gpuTargets be set?
       hipfft = self.callPackage ./hipfft { };
