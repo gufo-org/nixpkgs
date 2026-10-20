@@ -125,7 +125,7 @@ let
 
       rccl = self.callPackage ./rccl { };
 
-      #rocshmem = self.callPackage ./rocshmem { };
+      rocshmem = self.callPackage ./rocshmem { };
 
       hipcub = self.callPackage ./hipcub { };
 

@@ -1,0 +1,12 @@
+diff --git a/cmake/DeviceBitcode.cmake b/cmake/DeviceBitcode.cmake
+index f278f1b6bf8..979abba6a51 100644
+--- a/cmake/DeviceBitcode.cmake
++++ b/cmake/DeviceBitcode.cmake
+@@ -111,6 +111,7 @@ set(BITCODE_COMPILE_FLAGS_BASE
+     -fvisibility=default
+     -O3
+     -Xclang -mcode-object-version=none
++    -I${ROCM_PATH}/include
+     -I${CMAKE_CURRENT_SOURCE_DIR}/include/rocshmem
+     -I${CMAKE_CURRENT_SOURCE_DIR}/include
+     -I${CMAKE_CURRENT_SOURCE_DIR}/src
