@@ -103,7 +103,7 @@ let
 
       #rocprof-compute-viewer = self.callPackage ./rocprof-compute-viewer { };
 
-      #rocprof-trace-decoder = self.callPackage ./rocprof-trace-decoder { };
+      rocprof-trace-decoder = self.callPackage ./rocprof-trace-decoder { };
 
       rocgdb = self.callPackage ./rocgdb { };
 
