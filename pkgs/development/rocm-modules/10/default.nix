@@ -187,11 +187,13 @@ let
 
       #migraphx = self.callPackage ./migraphx { stdenv = origStdenv; };
 
-      #rpp = self.callPackage ./rpp { };
+      # TODO: add test targets?
+      # -- FFTS not found. rpp set to build without RPP_AUDIO_SUPPORT
+      rpp = self.callPackage ./rpp { };
 
-      #rpp-hip = self.rpp.override { useCPU = false; };
+      rpp-hip = self.rpp.override{ useCPU = false; };
 
-      #rpp-cpu = self.rpp.override { useCPU = true; };
+      rpp-cpu = self.rpp.override { useCPU = true; };
 
       #mivisionx = self.callPackage ./mivisionx {
       #  stdenv = origStdenv;
