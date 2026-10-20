@@ -121,7 +121,7 @@ let
 
       hiprand = self.callPackage ./hiprand { };
 
-      #rocfft = self.callPackage ./rocfft { };
+      rocfft = self.callPackage ./rocfft { };
 
       rccl = self.callPackage ./rccl { };
 
