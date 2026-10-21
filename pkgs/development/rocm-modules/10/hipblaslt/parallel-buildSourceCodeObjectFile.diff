@@ -1,0 +1,11 @@
+diff --git a/projects/hipblaslt/tensilelite/Tensile/Toolchain/Component.py b/projects/hipblaslt/tensilelite/Tensile/Toolchain/Component.py
+--- a/projects/hipblaslt/tensilelite/Tensile/Toolchain/Component.py
++++ b/projects/hipblaslt/tensilelite/Tensile/Toolchain/Component.py
+@@ -219,6 +219,7 @@
+             "-x", "hip", "-O3",
+             "-Xoffload-linker", f"--build-id={build_id_kind}",
+             "-std=c++17",
++            "-parallel-jobs=8",
+         ]
+
+         if asan_build:

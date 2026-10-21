@@ -1,0 +1,11 @@
+diff --git a/shared/rocroller/GPUArchitectureGenerator/isa_spec_manager/amdisa_structures.h b/shared/rocroller/GPUArchitectureGenerator/isa_spec_manager/amdisa_structures.h
+--- a/shared/rocroller/GPUArchitectureGenerator/isa_spec_manager/amdisa_structures.h
++++ b/shared/rocroller/GPUArchitectureGenerator/isa_spec_manager/amdisa_structures.h
+@@ -9,6 +9,7 @@
+ #include <string>
+ #include <vector>
+ #include <iostream>
++#include <stdint.h>
+ 
+ namespace amdisa
+ {

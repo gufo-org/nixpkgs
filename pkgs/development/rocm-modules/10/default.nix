@@ -167,7 +167,7 @@ let
 
       #hipblas = self.callPackage ./hipblas { };
 
-      #hipblaslt = self.callPackage ./hipblaslt { };
+      hipblaslt = self.callPackage ./hipblaslt { };
 
       #hipsparselt = self.callPackage ./hipsparselt { };
 

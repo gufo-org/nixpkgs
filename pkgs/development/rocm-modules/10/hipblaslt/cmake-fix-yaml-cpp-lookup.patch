@@ -1,0 +1,28 @@
+diff --git a/shared/rocroller/CMakeLists.txt b/shared/rocroller/CMakeLists.txt
+index 1271821962b..c7cbdfe6360 100644
+--- a/shared/rocroller/CMakeLists.txt
++++ b/shared/rocroller/CMakeLists.txt
+@@ -189,6 +189,8 @@ if(ROCROLLER_ENABLE_TIMERS)
+ endif()
+ 
+ if(ROCROLLER_ENABLE_YAML_CPP)
++  find_package(yaml-cpp 0.8.0 QUIET)
++  if(NOT yaml-cpp_FOUND)
+     if(ROCROLLER_ENABLE_FETCH)
+         block(SCOPE_FOR VARIABLES PROPAGATE yaml_cpp_SOURCE_DIR)
+             # option() honors existing variables
+@@ -207,10 +209,11 @@ if(ROCROLLER_ENABLE_YAML_CPP)
+         endblock()
+         set_property(DIRECTORY ${yaml_cpp_SOURCE_DIR} PROPERTY EXCLUDE_FROM_ALL ON)
+     else()
+-        find_package(yaml-cpp 0.8.0 REQUIRED)
++        message(FATAL_ERROR "Failed to find yaml-cpp")
+     endif()
+-    target_link_libraries(rocroller PUBLIC yaml-cpp::yaml-cpp)
+-    target_compile_definitions(rocroller PUBLIC ROCROLLER_USE_YAML_CPP)
++  endif()
++  target_link_libraries(rocroller PUBLIC yaml-cpp::yaml-cpp)
++  target_compile_definitions(rocroller PUBLIC ROCROLLER_USE_YAML_CPP)
+ endif()
+ 
+ target_compile_definitions(rocroller
