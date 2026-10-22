@@ -1,0 +1,36 @@
+diff --git a/source/lib/rocprofiler-sdk-rocattach/auxv.cpp b/source/lib/rocprofiler-sdk-rocattach/auxv.cpp
+index e3093b4d578..24ff6976756 100644
+--- a/source/lib/rocprofiler-sdk-rocattach/auxv.cpp
++++ b/source/lib/rocprofiler-sdk-rocattach/auxv.cpp
+@@ -26,6 +26,7 @@
+ #include "auxv.hpp"
+ 
+ #include <vector>
++#include <fstream>
+ 
+ namespace fs = rocprofiler::common::filesystem;
+ 
+diff --git a/source/lib/rocprofiler-sdk-rocpd/sql.cpp b/source/lib/rocprofiler-sdk-rocpd/sql.cpp
+index 01faadb0c5e..d012601db44 100644
+--- a/source/lib/rocprofiler-sdk-rocpd/sql.cpp
++++ b/source/lib/rocprofiler-sdk-rocpd/sql.cpp
+@@ -49,6 +49,7 @@
+ #include <yaml-cpp/parser.h>
+ 
+ #include <dlfcn.h>
++#include <fstream>
+ #include <cstddef>
+ #include <initializer_list>
+ #include <unordered_map>
+diff --git a/source/lib/rocprofiler-sdk/counters/metrics.cpp b/source/lib/rocprofiler-sdk/counters/metrics.cpp
+index c17306a691b..b9b88b58199 100644
+--- a/source/lib/rocprofiler-sdk/counters/metrics.cpp
++++ b/source/lib/rocprofiler-sdk/counters/metrics.cpp
+@@ -49,6 +49,7 @@
+ #include <dlfcn.h>  // for dladdr
+ #include <cstdint>
+ #include <cstdlib>
++#include <fstream>
+ #include <map>
+ #include <memory>
+ #include <system_error>
