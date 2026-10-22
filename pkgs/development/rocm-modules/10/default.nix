@@ -155,7 +155,8 @@ let
       # TODO: enable test/bench by default
       rocwmma = self.callPackage ./rocwmma { };
 
-      #rocalution = self.callPackage ./rocalution { };
+      # TODO: enable test/bench by default
+      rocalution = self.callPackage ./rocalution { };
 
       # 2026-10-20: no 10.0 update available
       #TODO: init rocmlir-triton and add a warning
