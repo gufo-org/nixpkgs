@@ -6,7 +6,7 @@
   #boost179,
   #opencv,
   python3Packages,
-  #openmpi,
+  openmpi,
   stdenv,
   pkgs,
 }:
@@ -18,7 +18,7 @@ let
       inherit (self) llvm;
       origStdenv = stdenv;
       pyPackages = python3Packages;
-      #openmpi-orig = openmpi;
+      openmpi-orig = openmpi;
       rocmClangStdenv = llvm.rocmClangStdenv;
     in
     ## update script ##
@@ -56,6 +56,7 @@ let
         inherit (llvm) clang;
       };
 
+      # TODO: validate if disabled patches need rebasing
       rocm-runtime = self.callPackage ./rocm-runtime {
         stdenv = origStdenv;
       };
@@ -80,45 +81,43 @@ let
       #  inherit (self) rocmUpdateScript;
       #};
 
-      #aqlprofile = self.callPackage ./aqlprofile { };
+      aqlprofile = self.callPackage ./aqlprofile { };
 
       #rdc = self.callPackage ./rdc { };
 
       #rocm-docs-core = python3Packages.callPackage ./rocm-docs-core { };
 
-      #aotriton = self.callPackage ./aotriton { stdenv = origStdenv; };
+      aotriton = self.callPackage ./aotriton { stdenv = origStdenv; };
 
-      #hipify = self.callPackage ./hipify {
-      #  stdenv = origStdenv;
-      #};
+      hipify = self.callPackage ./hipify {
+        stdenv = origStdenv;
+      };
 
-      ## hsakmt was merged into rocm-runtime
-      #hsakmt = self.rocm-runtime;
-
-      #rocprofiler = self.callPackage ./rocprofiler {
-      #  inherit (llvm) clang;
-      #};
+      # TODO: validate submodules usage
+      rocprofiler = self.callPackage ./rocprofiler {
+        inherit (llvm) clang;
+      };
       #rocprofiler-sdk = self.callPackage ./rocprofiler-sdk { };
 
       #rocprof-compute-viewer = self.callPackage ./rocprof-compute-viewer { };
 
       #rocprof-trace-decoder = self.callPackage ./rocprof-trace-decoder { };
 
-      #rocgdb = self.callPackage ./rocgdb { };
+      rocgdb = self.callPackage ./rocgdb { };
 
-      #rocdbgapi = self.callPackage ./rocdbgapi { };
+      rocdbgapi = self.callPackage ./rocdbgapi { };
 
-      #rocr-debug-agent = self.callPackage ./rocr-debug-agent { };
+      rocr-debug-agent = self.callPackage ./rocr-debug-agent { };
 
-      #rocprim = self.callPackage ./rocprim { };
+      rocprim = self.callPackage ./rocprim { };
 
       #rocsparse = self.callPackage ./rocsparse { };
 
-      #rocthrust = self.callPackage ./rocthrust { };
+      rocthrust = self.callPackage ./rocthrust { };
 
-      #rocrand = self.callPackage ./rocrand { };
+      rocrand = self.callPackage ./rocrand { };
 
-      #hiprand = self.callPackage ./hiprand { };
+      hiprand = self.callPackage ./hiprand { };
 
       #rocfft = self.callPackage ./rocfft { };
 
@@ -128,7 +127,7 @@ let
 
       #rocshmem = self.callPackage ./rocshmem { };
 
-      #hipcub = self.callPackage ./hipcub { };
+      hipcub = self.callPackage ./hipcub { };
 
       #hipsparse = self.callPackage ./hipsparse { };
 
@@ -138,12 +137,12 @@ let
 
       #hiprt = self.callPackage ./hiprt { };
 
-      #tensile = pyPackages.callPackage ./tensile {
-      #  inherit (self)
-      #    rocmUpdateScript
-      #    clr
-      #    ;
-      #};
+      tensile = pyPackages.callPackage ./tensile {
+        inherit (self)
+          rocmUpdateScript
+          clr
+          ;
+      };
 
       #rocblas = self.callPackage ./rocblas { };
 
@@ -153,14 +152,16 @@ let
 
       #rocalution = self.callPackage ./rocalution { };
 
-      #rocmlir-rock = self.callPackage ./rocmlir {
-      #  buildRockCompiler = true;
-      #};
-      #rocmlir = self.rocmlir-rock;
+      # 2026-10-20: no 10.0 update available
+      #TODO: init rocmlir-triton and add a warning
+      rocmlir-rock = self.callPackage ./rocmlir {
+        buildRockCompiler = true;
+      };
+      rocmlir = self.rocmlir-rock;
 
       #hipsolver = self.callPackage ./hipsolver { };
 
-      #hipblas-common = self.callPackage ./hipblas-common { };
+      hipblas-common = self.callPackage ./hipblas-common { };
 
       #hipblas = self.callPackage ./hipblas { };
 
@@ -175,7 +176,7 @@ let
       #  inherit (self) composable_kernel rocm-toolchain;
       #};
 
-      #half = self.callPackage ./half { };
+      half = self.callPackage ./half { };
 
       #miopen = self.callPackage ./miopen {
       #  boost = boost179.override { enableStatic = true; };
@@ -210,24 +211,26 @@ let
 
       ## Even if config.rocmSupport is false we need rocmSupport true
       ## version of ucc/ucx in openmpi in this package set
-      #openmpi = openmpi-orig.override (
-      #  prev:
-      #  let
-      #    ucx = prev.ucx.override {
-      #      enableCuda = false;
-      #      enableRocm = true;
-      #      rocmPackages = self;
-      #    };
-      #  in
-      #  {
-      #    inherit ucx;
-      #    ucc = prev.ucc.override {
-      #      enableCuda = false;
-      #      inherit ucx;
-      #    };
-      #  }
-      #);
-      #mpi = self.openmpi;
+      # TODO: packages will build with openmpi/mpi from nixpkgs
+      # check if what those packages are requesting
+      openmpi = openmpi-orig.override (
+        prev:
+        let
+          ucx = prev.ucx.override {
+            enableCuda = false;
+            enableRocm = true;
+            rocmPackages = self;
+          };
+        in
+        {
+          inherit ucx;
+          ucc = prev.ucc.override {
+            enableCuda = false;
+            inherit ucx;
+          };
+        }
+      );
+      mpi = self.openmpi;
 
       meta = {
         # eval all pkgsRocm release attrs with
@@ -248,16 +251,23 @@ let
           ) { } attrPaths;
       };
 
-      #rocm-bandwidth-test = self.callPackage ./rocm-bandwidth-test {
-      #  rocmPackages = self;
-      #};
-
-      #rocm-tests = self.callPackage ./rocm-tests {
-      #  rocmPackages = self;
-      #};
+      rocm-tests = self.callPackage ./rocm-tests {
+        rocmPackages = self;
+      };
     }
     ## legacy aliases ##
     // lib.optionalAttrs config.allowAliases {
+
+      ## hsakmt was merged into rocm-runtime
+      hsakmt = lib.warn ''
+        'rocmPackages.hasmt' merged into 'rocm-runtime' during rocm 6.3.1. Please replace references of 'hasmt' with 'rocm-runtime.
+      '' self.rocm-runtime; # Added 2026-10-20
+
+      rocm-bandwidth-test = throw ''
+        'rocm-bandwidth-test' has been removed as it is no longer maintained upstream. It is
+        replaced by ROCm TransferBench or ROCm Validation Suite which bundles TransferBench.
+      ''; # Added 2026-10-14
+
       rpp-opencl = throw ''
         'rpp-opencl' has been removed as it has been broken for a year and has no consuming packages.
         Use 'rpp' or 'rpp-cpu' instead.
@@ -323,7 +333,7 @@ in
 outer
 // lib.genAttrs outer.clr.gpuTargets (arch: scopeForArches [ arch ])
 // {
-  # TODO revisit in both 10 and 7
+  # TODO: revisit in both 10 and 7
   # list is present in ~4? copies and separately in clr
   # https://github.com/NixOS/nixpkgs/commit/b17c41cc49a6cdf0364c48d55e2d69dc309b0c41
   # list matches while 7 included gfx versions not in the upstream list
@@ -352,3 +362,4 @@ outer
     "gfx1201"
   ];
 }
+
