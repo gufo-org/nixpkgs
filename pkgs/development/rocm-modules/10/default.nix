@@ -152,7 +152,8 @@ let
 
       rocsolver = self.callPackage ./rocsolver { };
 
-      #rocwmma = self.callPackage ./rocwmma { };
+      # TODO: enable test/bench by default
+      rocwmma = self.callPackage ./rocwmma { };
 
       #rocalution = self.callPackage ./rocalution { };
 
