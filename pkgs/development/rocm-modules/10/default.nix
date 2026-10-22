@@ -5,9 +5,9 @@
   newScope,
   #boost179,
   #opencv,
-  #python3Packages,
+  python3Packages,
   #openmpi,
-  #stdenv,
+  stdenv,
   pkgs,
 }:
 
@@ -16,8 +16,8 @@ let
     self:
     let
       inherit (self) llvm;
-      #origStdenv = stdenv;
-      #pyPackages = python3Packages;
+      origStdenv = stdenv;
+      pyPackages = python3Packages;
       #openmpi-orig = openmpi;
       rocmClangStdenv = llvm.rocmClangStdenv;
     in
@@ -43,35 +43,35 @@ let
     }
     ## clr ##
     // {
-    #  rocm-cmake = self.callPackage ./rocm-cmake { stdenv = origStdenv; };
+      rocm-cmake = self.callPackage ./rocm-cmake { stdenv = origStdenv; };
 
-    #  # TODO: reintroduce isa compatibility patch?
-    #  rocm-comgr = self.callPackage ./rocm-comgr { };
+      # TODO: reintroduce isa compatibility patch?
+      rocm-comgr = self.callPackage ./rocm-comgr { };
 
-    #  rocm-core = self.callPackage ./rocm-core { stdenv = origStdenv; };
+      rocm-core = self.callPackage ./rocm-core { stdenv = origStdenv; };
 
-    #  rocminfo = self.callPackage ./rocminfo { stdenv = origStdenv; };
+      rocminfo = self.callPackage ./rocminfo { stdenv = origStdenv; };
 
-    #  rocprofiler-register = self.callPackage ./rocprofiler-register {
-    #    inherit (llvm) clang;
-    #  };
+      rocprofiler-register = self.callPackage ./rocprofiler-register {
+        inherit (llvm) clang;
+      };
 
-    #  rocm-runtime = self.callPackage ./rocm-runtime {
-    #    stdenv = origStdenv;
-    #  };
+      rocm-runtime = self.callPackage ./rocm-runtime {
+        stdenv = origStdenv;
+      };
 
-    #  rocm-smi = pyPackages.callPackage ./rocm-smi {
-    #    inherit (self) rocmUpdateScript;
-    #  };
+      rocm-smi = pyPackages.callPackage ./rocm-smi {
+        inherit (self) rocmUpdateScript;
+      };
 
-    #  roctracer = self.callPackage ./roctracer { };
+      roctracer = self.callPackage ./roctracer { };
 
-    #  hip-common = self.callPackage ./hip-common { };
+      hip-common = self.callPackage ./hip-common { };
 
-    #  hipcc = self.callPackage ./hipcc { stdenv = origStdenv; };
+      hipcc = self.callPackage ./hipcc { stdenv = origStdenv; };
 
-    #  # TODO: impure-test opencl-cts and spriv fail on master
-    #  clr = self.callPackage ./clr { };
+      # TODO: impure-test opencl-cts and spriv fail on master
+      clr = self.callPackage ./clr { };
     }
     ## packages ##
     // {
@@ -310,45 +310,45 @@ let
       ''; # Added 2024-3-24
     }
   );
-  #scopeForArches =
-  #  arches:
-  #  outer.overrideScope (
-  #    _final: prev: {
-  #      clr = prev.clr.override {
-  #        localGpuTargets = arches;
-  #      };
-  #    }
-  #  );
+  scopeForArches =
+    arches:
+    outer.overrideScope (
+      _final: prev: {
+        clr = prev.clr.override {
+          localGpuTargets = arches;
+        };
+      }
+    );
 in
 outer
-#// lib.genAttrs outer.clr.gpuTargets (arch: scopeForArches [ arch ])
-#// {
-#  # TODO revisit in both 10 and 7
-#  # list is present in ~4? copies and separately in clr
-#  # https://github.com/NixOS/nixpkgs/commit/b17c41cc49a6cdf0364c48d55e2d69dc309b0c41
-#  # list matches while 7 included gfx versions not in the upstream list
-#  # https://rocm.docs.amd.com/en/docs-10.0.0/compatibility/compatibility-matrix.html?fam=instinct&gpu=amd-instinct-mi355x&os=ubuntu&gfx=gfx950
-#  gfx9 = scopeForArches [
-#    "gfx908"
-#    "gfx90a"
-#    "gfx942"
-#    "gfx950"
-#  ];
-#  gfx10 = scopeForArches [
-#    "gfx1030"
-#  ];
-#  gfx11 = scopeForArches [
-#    "gfx1100"
-#    "gfx1101"
-#    "gfx1102"
-#    "gfx1103"
-#    "gfx1150"
-#    "gfx1151"
-#    "gfx1152"
-#    "gfx1153"
-#  ];
-#  gfx12 = scopeForArches [
-#    "gfx1200"
-#    "gfx1201"
-#  ];
-#}
+// lib.genAttrs outer.clr.gpuTargets (arch: scopeForArches [ arch ])
+// {
+  # TODO revisit in both 10 and 7
+  # list is present in ~4? copies and separately in clr
+  # https://github.com/NixOS/nixpkgs/commit/b17c41cc49a6cdf0364c48d55e2d69dc309b0c41
+  # list matches while 7 included gfx versions not in the upstream list
+  # https://rocm.docs.amd.com/en/docs-10.0.0/compatibility/compatibility-matrix.html?fam=instinct&gpu=amd-instinct-mi355x&os=ubuntu&gfx=gfx950
+  gfx9 = scopeForArches [
+    "gfx908"
+    "gfx90a"
+    "gfx942"
+    "gfx950"
+  ];
+  gfx10 = scopeForArches [
+    "gfx1030"
+  ];
+  gfx11 = scopeForArches [
+    "gfx1100"
+    "gfx1101"
+    "gfx1102"
+    "gfx1103"
+    "gfx1150"
+    "gfx1151"
+    "gfx1152"
+    "gfx1153"
+  ];
+  gfx12 = scopeForArches [
+    "gfx1200"
+    "gfx1201"
+  ];
+}
