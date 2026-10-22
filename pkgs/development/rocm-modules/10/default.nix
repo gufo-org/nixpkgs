@@ -114,7 +114,8 @@ let
 
       rocprim = self.callPackage ./rocprim { };
 
-      #rocsparse = self.callPackage ./rocsparse { };
+      # TODO: validate depx.nix matricies
+      rocsparse = self.callPackage ./rocsparse { };
 
       rocthrust = self.callPackage ./rocthrust { };
 
