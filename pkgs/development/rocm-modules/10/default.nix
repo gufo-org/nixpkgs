@@ -146,7 +146,8 @@ let
           ;
       };
 
-      #rocblas = self.callPackage ./rocblas { };
+      # TODO: use tensile from shared?
+      rocblas = self.callPackage ./rocblas { };
 
       #rocsolver = self.callPackage ./rocsolver { };
 
