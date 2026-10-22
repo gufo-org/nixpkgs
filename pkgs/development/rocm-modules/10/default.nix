@@ -171,7 +171,9 @@ let
 
       hipblas-common = self.callPackage ./hipblas-common { };
 
-      #hipblas = self.callPackage ./hipblas { };
+      # TODO: enable test/bench by default
+      # TODO: lapack or lapack-reference?
+      hipblas = self.callPackage ./hipblas { };
 
       hipblaslt = self.callPackage ./hipblaslt { };
 
