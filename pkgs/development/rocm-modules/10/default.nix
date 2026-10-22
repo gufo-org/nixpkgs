@@ -101,7 +101,7 @@ let
       };
       #rocprofiler-sdk = self.callPackage ./rocprofiler-sdk { };
 
-      #rocprof-compute-viewer = self.callPackage ./rocprof-compute-viewer { };
+      rocprof-compute-viewer = self.callPackage ./rocprof-compute-viewer { };
 
       rocprof-trace-decoder = self.callPackage ./rocprof-trace-decoder { };
 
