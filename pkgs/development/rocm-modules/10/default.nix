@@ -165,7 +165,9 @@ let
       };
       rocmlir = self.rocmlir-rock;
 
-      #hipsolver = self.callPackage ./hipsolver { };
+      # TODO: enable test/bench by default
+      # TODO: lapack or lapack-reference?
+      hipsolver = self.callPackage ./hipsolver { };
 
       hipblas-common = self.callPackage ./hipblas-common { };
 
