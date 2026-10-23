@@ -1,8 +1,7 @@
 diff --git a/clang/lib/Driver/Compilation.cpp b/clang/lib/Driver/Compilation.cpp
-index f8ca2a3d0940..a41b008c036d 100644
 --- a/lib/Driver/Compilation.cpp
 +++ b/lib/Driver/Compilation.cpp
-@@ -235,6 +235,9 @@ static bool ActionFailed(const Action *A,
+@@ -365,6 +365,9 @@
  void Compilation::ExecuteJobs(const JobList &Jobs,
                                FailingCommandList &FailingCommands,
                                bool LogOnly) const {
@@ -12,10 +11,10 @@ index f8ca2a3d0940..a41b008c036d 100644
    // According to UNIX standard, driver need to continue compiling all the
    // inputs on the command line even one of them failed.
    // In all but CLMode, execute all the jobs unless the necessary inputs for the
-@@ -242,12 +245,24 @@ void Compilation::ExecuteJobs(const JobList &Jobs,
-   for (const auto &Job : Jobs) {
-     if (ActionFailed(&Job.getSource(), FailingCommands))
-       continue;
+@@ -393,12 +396,24 @@
+       }
+     }
+ 
 +    auto job_start_time = std::chrono::steady_clock::now();
      const Command *FailingCommand = nullptr;
      if (int Res = ExecuteCommand(Job, FailingCommand, LogOnly)) {
@@ -35,5 +34,5 @@ index f8ca2a3d0940..a41b008c036d 100644
 +          llvm::errs() << "Job completed: " << Job.getOutputFilenames().front().c_str() << "\n";
 +      }
      }
+     ++I;
    }
- }

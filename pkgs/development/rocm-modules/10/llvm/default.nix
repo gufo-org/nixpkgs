@@ -2,6 +2,9 @@
   lib,
   stdenv,
   # LLVM version closest to ROCm fork to override
+  # ROCm 10.1 forks LLVM 24, nixpkgs has no llvmPackages_24 yet. The base only
+  # supplies packaging and the bootstrap compiler, ROCm LLVM is built from its
+  # own source with version = rocmLlvmVersion.
   llvmPackages_23,
   overrideCC,
   lndir,
@@ -36,11 +39,11 @@
 }:
 
 let
-  version = "10.0";
+  version = "10.1";
   # major version of this should be the clang version ROCm forked from
-  rocmLlvmVersion = "23.0.0-rocm";
-  # llvmPackages_base version should match rocmLlvmVersion
-  # so libllvm's bitcode is compatible with the built toolchain
+  rocmLlvmVersion = "24.0.0-rocm";
+  # llvmPackages_base should match rocmLlvmVersion so libllvm's bitcode is
+  # compatible with the built toolchain. Only used to bootstrap while LTO is off.
   llvmPackages_base = llvmPackages_23;
   llvmPackagesNoBintools = llvmPackages_base.override {
     bootBintools = null;
@@ -118,7 +121,7 @@ let
     owner = "ROCm";
     repo = "llvm-project";
     tag = "therock-${version}";
-    hash = "sha256-s2nBt1Hhc03vtosrUaTr+OBCTWsCfZk5GDmziYlCE54=";
+    hash = "sha256-WkgJF0D4XsrWKbJO+vKow9CrNIKL/PqOXRwrB3ECsQE=";
   };
   llvmMajorVersion = lib.versions.major rocmLlvmVersion;
   # An llvmPackages (pkgs/development/compilers/llvm/) built from ROCm LLVM's source tree
@@ -212,7 +215,7 @@ let
 
         # Clang config file: redirect resource dir to the sysroot (where compiler-rt
         # lives) and set GCC install prefix for header/library search
-        # TODO understand zstd change
+        # LLVM 24 clang-linker-wrapper links -lzstd for compressed offload bundles
         cat > $out/bin/${stdenv.hostPlatform.config}.cfg <<CFG
         -resource-dir=$out/lib/clang/${llvmMajorVersion}
         ${lib.optionalString (!withLibcxx) "--gcc-toolchain=${gcc-prefix}"}
@@ -385,18 +388,6 @@ overrideLlvmPackagesRocm (s: {
           #  relative = "clang";
           #})
         ];
-        # ROCm 7.2 commits 4dda51261a6 "Replace hostexec with upstream rpc"
-        # and 2ca1509d6d2 "Put the RTL, Back!", added CGEmitEmissaryExec.cpp which
-        # includes ../../openmp/device/include/EmissaryIds.h, breaking
-        # standalone clang builds. The upstream PR llvm/llvm-project#175265
-        # ("[OpenMP] support for Emissary APIs") moves EmissaryIds.h into
-        # clang/lib/Headers/ so this should not be needed once that lands
-        # and ROCm rebases onto it.
-        postUnpack = ''
-          ${old.postUnpack or ""}
-          mkdir -p "''${sourceRoot}/openmp/device/include"
-          ln -s "${llvmSrc}/openmp/device/include/EmissaryIds.h" "''${sourceRoot}/openmp/device/include/"
-        '';
         hardeningDisable = [ "all" ];
         nativeBuildInputs = old.nativeBuildInputs ++ [
           removeReferencesTo
