@@ -200,7 +200,7 @@ let
 
       miopen-hip = self.miopen;
 
-      #migraphx = self.callPackage ./migraphx { stdenv = origStdenv; };
+      migraphx = self.callPackage ./migraphx { stdenv = origStdenv; };
 
       # TODO: add test targets?
       # -- FFTS not found. rpp set to build without RPP_AUDIO_SUPPORT
