@@ -24,7 +24,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "amdsmi";
-  version = "10.0";
+  version = "10.1";
   src = fetchFromGitHub {
     owner = "ROCm";
     repo = "rocm-systems";
@@ -33,7 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
       "projects/amdsmi"
       "shared"
     ];
-    hash = "sha256-yhgSwRk9vL40bmnAE3im7DOXy6uMA7NTZxPp5fQC7Qo=";
+    hash = "sha256-CmCVPmqgU0HtqIBuJUs+Nr7LRKtngOaNNsWFek9Nino=";
   };
   sourceRoot = "${finalAttrs.src.name}/projects/amdsmi";
 

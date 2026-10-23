@@ -12,7 +12,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   name = "rocprof-trace-decoder";
-  version = "10.0";
+  version = "10.1";
 
   src = fetchFromGitHub {
     owner = "ROCm";
@@ -22,7 +22,7 @@ stdenv.mkDerivation (finalAttrs: {
       "projects/rocprof-trace-decoder"
       "shared"
     ];
-    hash = "sha256-DycEdzXKcEjEybZ/IwTelbTgyaRPqVvoUDUtqhfdhQA=";
+    hash = "sha256-0cbkljtw/gZJwXPUpJuLXpQlXfR/MQgEGbLDsRdzpcw=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/projects/rocprof-trace-decoder";

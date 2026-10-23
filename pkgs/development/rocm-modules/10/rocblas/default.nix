@@ -42,7 +42,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rocblas${clr.gpuArchSuffix}";
-  version = "10.0";
+  version = "10.1";
 
   src = fetchFromGitHub {
     owner = "ROCm";
@@ -52,7 +52,7 @@ stdenv.mkDerivation (finalAttrs: {
       "projects/rocblas"
       "shared"
     ];
-    hash = "sha256-8LdII9gSFxuBeJwfQgOW+1/M33nbuR6TwcrD4k6W0Oo=";
+    hash = "sha256-G6vo78dbgP02zQJKsAuFPoncy2rsGkenZWrfvj4mD8M=";
   };
   sourceRoot = "${finalAttrs.src.name}/projects/rocblas";
 

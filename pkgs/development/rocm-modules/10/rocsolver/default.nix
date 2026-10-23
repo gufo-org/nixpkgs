@@ -41,7 +41,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "rocsolver${clr.gpuArchSuffix}";
-  version = "10.0";
+  version = "10.1";
 
   outputs = [
     "out"
@@ -61,7 +61,7 @@ stdenv.mkDerivation (finalAttrs: {
       "projects/rocsolver"
       "shared"
     ];
-    hash = "sha256-JvY6zOgUMSeVNYP4VVvoXx8CcMv/6uQy1tb7BpsxcSg=";
+    hash = "sha256-hqCOQ5frigvHc21MBnjPJff6pQNm+JjzelwO8NR9dXo=";
   };
   sourceRoot = "${finalAttrs.src.name}/projects/rocsolver";
 

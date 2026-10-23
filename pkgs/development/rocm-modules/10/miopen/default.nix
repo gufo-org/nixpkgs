@@ -52,7 +52,7 @@ let
     "-I${sqlite.dev}/include"
     "-I${rocrand}/include"
   ];
-  version = "10.0";
+  version = "10.1";
 
   # Targets outside this list will get
   # error: use of undeclared identifier 'CK_BUFFER_RESOURCE_3RD_DWORD'
@@ -140,7 +140,7 @@ stdenv.mkDerivation (finalAttrs: {
       "shared"
     ];
     fetchSubmodules = true;
-    hash = "sha256-8Ksw1v/nkSSS8ecWJ7CaRnK4JX1Kn6+EMg8GrTzSzhA=";
+    hash = "sha256-pIo0QeVJ64Abte5u319kd2O6gjHIOtMkBo3h4thpzDo=";
   };
   sourceRoot = "${finalAttrs.src.name}/projects/miopen";
 

@@ -48,13 +48,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "hipsparselt${clr.gpuArchSuffix}";
-  version = "10.0";
+  version = "10.1";
 
   src = fetchFromGitHub {
     owner = "ROCm";
     repo = "rocm-libraries";
     tag = "therock-${finalAttrs.version}";
-    hash = "sha256-J4yhAACW7Iha62DLayhVLMbxuncsq36B81eDALw8P6E=";
+    hash = "sha256-n/MZPHFFtcVY2yHTapBSPTjvS7J+VtgCWunvSv8De48=";
     sparseCheckout = [
       "projects/hipsparselt"
       # TODO: stop building hipblaslt from source, needs a 10.1+ release

@@ -30,7 +30,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rocshmem${clr.gpuArchSuffix}";
-  version = "10.0";
+  version = "10.1";
 
   src = fetchFromGitHub {
     owner = "ROCm";
@@ -40,7 +40,7 @@ stdenv.mkDerivation (finalAttrs: {
       "projects/rocshmem"
       "shared"
     ];
-    hash = "sha256-KkMtpW1OYqTp4p+d/Z27PCVM4T4oAOtAPk3uqTxFRJA=";
+    hash = "sha256-uVUHYyJbaE5vauN1mczLf7rYNxRSD93eJDIDbzbYzHs=";
   };
   sourceRoot = "${finalAttrs.src.name}/projects/rocshmem";
 

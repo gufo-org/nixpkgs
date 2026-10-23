@@ -10,13 +10,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "hipfort";
-  version = "10.0.0";
+  version = "10.1.0";
 
   src = fetchFromGitHub {
     owner = "ROCm";
     repo = "hipfort";
     tag = "rocm-${finalAttrs.version}";
-    hash = "sha256-qyBz+zFwJOjjmKFKKw9Cxo7kDDXlMFhPhuJIYykPpDs=";
+    hash = "sha256-/Q/wVXkJJjDSsqVRSdtMPyOw72SRDawxnyv4BY0be8g=";
   };
 
   __structuredAttrs = true;

@@ -42,7 +42,7 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   pname = "composable_kernel_base";
-  version = "10.0";
+  version = "10.1";
 
   src = fetchFromGitHub {
     owner = "ROCm";
@@ -52,7 +52,7 @@ stdenv.mkDerivation (finalAttrs: {
       projectRoot
       "shared"
     ];
-    hash = "sha256-zwJ8jPv9gtMc0PHNQuu6R0kgO59uDfPtrVZ8Tv3Wwjs=";
+    hash = "sha256-1ycnnO7ul/uFsIPAOWfg641nsx96LI/Txs79RAxaBDI=";
   };
   sourceRoot = "${finalAttrs.src.name}/${projectRoot}";
 

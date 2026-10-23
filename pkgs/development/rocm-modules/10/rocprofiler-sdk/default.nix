@@ -46,7 +46,7 @@
 # rocprofiler-sdk is the home of rocprofv3
 stdenv.mkDerivation (finalAttrs: {
   pname = "rocprofiler-sdk";
-  version = "10.0";
+  version = "10.1";
 
   outputs = [
     "out"
@@ -57,7 +57,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "ROCm";
     repo = "rocm-systems";
     tag = "therock-${finalAttrs.version}";
-    hash = "sha256-N83wTDI6R66pOnDdxYIS9SZy64o1fyHzj7awRJKXNp0=";
+    hash = "sha256-UmYHC+87XIW+Z4WVd7k0MQ9baTvFlq/SgCt9Foy1mPI=";
     fetchSubmodules = true;
     sparseCheckout = [
       "projects/rocprofiler-sdk"
