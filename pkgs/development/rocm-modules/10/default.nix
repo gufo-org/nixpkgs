@@ -4,7 +4,7 @@
   callPackage,
   newScope,
   boost179,
-  #opencv,
+  opencv,
   python3Packages,
   openmpi,
   stdenv,
@@ -210,22 +210,24 @@ let
 
       rpp-cpu = self.rpp.override { useCPU = true; };
 
-      #mivisionx = self.callPackage ./mivisionx {
-      #  stdenv = origStdenv;
-      #  opencv = opencv.override { enablePython = true; };
-      #};
+      # No therock release available as of 10.0
+      # see: https://github.com/ROCm/TheRock/pull/8079
+      mivisionx = self.callPackage ./mivisionx {
+        stdenv = origStdenv;
+        opencv = opencv.override { enablePython = true; };
+      };
 
-      #mivisionx-hip = self.mivisionx.override {
-      #  rpp = self.rpp-hip;
-      #  useOpenCL = false;
-      #  useCPU = false;
-      #};
+      mivisionx-hip = self.mivisionx.override {
+        rpp = self.rpp-hip;
+        useOpenCL = false;
+        useCPU = false;
+      };
 
-      #mivisionx-cpu = self.mivisionx.override {
-      #  rpp = self.rpp-cpu;
-      #  useOpenCL = false;
-      #  useCPU = true;
-      #};
+      mivisionx-cpu = self.mivisionx.override {
+        rpp = self.rpp-cpu;
+        useOpenCL = false;
+        useCPU = true;
+      };
 
       libdivide = self.callPackage ./libdivide { };
 
