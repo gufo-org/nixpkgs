@@ -63,6 +63,10 @@ stdenv.mkDerivation (finalAttrs: {
     "-DCMAKE_INSTALL_BINDIR=bin"
     "-DCMAKE_INSTALL_LIBDIR=lib"
     "-DCMAKE_INSTALL_INCLUDEDIR=include"
+    # py-interface errors out when neither /usr/bin/python3 nor
+    # /usr/libexec/platform-python exists. The site-packages install it guards
+    # is DESTDIR-gated and skipped, so this only satisfies the check.
+    "-DAMDSMI_SYSTEM_PYTHON_SITELIB=${placeholder "out"}/${python.sitePackages}"
   ];
 
   postInstall = ''
