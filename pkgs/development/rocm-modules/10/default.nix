@@ -3,7 +3,7 @@
   config,
   callPackage,
   newScope,
-  #boost179,
+  boost179,
   #opencv,
   python3Packages,
   openmpi,
@@ -191,11 +191,14 @@ let
 
       half = self.callPackage ./half { };
 
-      #miopen = self.callPackage ./miopen {
-      #  boost = boost179.override { enableStatic = true; };
-      #};
+      # TODO: see if the update.sh can use the github hash to short circuit download step
+      # TODO: enable docs/test by default
+      miopen = self.callPackage ./miopen {
+        # boost > 1.90 may error: https://github.com/ROCm/rocm-libraries/issues/9620
+        boost = boost179.override { enableStatic = true; };
+      };
 
-      #miopen-hip = self.miopen;
+      miopen-hip = self.miopen;
 
       #migraphx = self.callPackage ./migraphx { stdenv = origStdenv; };
 
