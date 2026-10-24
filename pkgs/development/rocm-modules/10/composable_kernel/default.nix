@@ -403,6 +403,15 @@ let
         # So, bodge. Otherwise you end up having to build all of ROCm with a low core limit when
         # it's only this package that has trouble.
         preConfigure = old.preConfigure or "" + ''
+          # clang 24 forwards NIX_LDFLAGS to the HIP device linker, so the
+          # cc-wrapper's "-rpath $out/lib" ends up in each part's compressed
+          # .hip_fatbin, where it can't be scrubbed, and becomes a disallowed
+          # reference from the final CK. The parts only emit .o files, so drop it.
+          for _v in NIX_LDFLAGS ''${!NIX_LDFLAGS_*}; do
+            printf -v "$_v" '%s' "$(sed "s| *-rpath $out/lib||g" <<< "''${!_v-}")"
+            export "$_v"
+          done
+
           MEM_GB_TOTAL=$(awk '/MemTotal/ { printf "%d \n", $2/1024/1024 }' /proc/meminfo)
           MEM_GB_AVAILABLE=$(awk '/MemAvailable/ { printf "%d \n", $2/1024/1024 }' /proc/meminfo)
           APPX_GB=$((MEM_GB_AVAILABLE > MEM_GB_TOTAL ? MEM_GB_TOTAL : MEM_GB_AVAILABLE))
