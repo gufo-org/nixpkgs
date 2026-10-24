@@ -221,6 +221,11 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeBool "MIOPEN_USE_COMPOSABLEKERNEL" withComposableKernel)
     (lib.cmakeBool "MIOPEN_USE_HIPRTC" true)
     (lib.cmakeBool "MIOPEN_USE_COMGR" true)
+    # hipconv (new in 10.1) only serves cdna3+ but its CMake compiles every arch
+    # dir, and the cdna4 direct_wgrad kernels fail with clang 24 ("reference to
+    # __host__ variable in __device__ function"). conv_hipconv.cpp self-guards on
+    # MIOPEN_USE_HIPCONV. Re-enable once the kernels build with clang 24.
+    (lib.cmakeBool "MIOPEN_USE_HIPCONV" false)
     (lib.cmakeFeature "CMAKE_HIP_COMPILER_ROCM_ROOT" "${clr}")
     # Manually define CMAKE_INSTALL_<DIR>
     # See: https://github.com/NixOS/nixpkgs/pull/197838
