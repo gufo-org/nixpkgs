@@ -105,22 +105,6 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   patches = [
-    # Can be removed when a release contains the changes found in this pr:
-    # https://github.com/ROCm/rocm-systems/pull/4721
-    # Not quite for 10.0
-    ./0003-allow-using-system-elfio-dependency.patch
-    ./0004-allow-using-system-otf2-dependency.patch
-    ./0005-allow-using-system-json-dependency.patch
-    ./0006-fix-amd-comgr-resolution.patch
-  ]
-  ++ [
-    # One new import failure added to source commit:
-    # https://github.com/ROCm/rocm-systems/pull/4721/changes/f7f24a54cbe55425fbefc87c7a3d0f4c85224948
-    # which is also part of https://github.com/ROCm/rocm-systems/pull/4721
-    # limited down to fstream includes in 10.0. Likely removable during 10.1
-    ./fstream-include.patch
-  ]
-  ++ [
     # Prevent a segfault on `import torch` (and other consumers that link
     # librocprofiler-sdk for tracing) when OpenMP auto-discovers our
     # ompt_start_tool before glog is initialized. Upstream incidentally fixes
