@@ -2,7 +2,6 @@
   amd-blis,
   boost,
   cmake,
-  diffutils,
   fetchFromGitHub,
   gfortran,
   gitMinimal,
@@ -99,8 +98,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   env.CXXFLAGS = "-fopenmp -I${lib.getDev boost}/include -I${hipblas-common}/include -I${roctracer}/include";
   # Fails to link tests with undefined symbol: cblas_*
+  # cblas needs an explicit -L: the unwrapped rocm-toolchain clang does not add
+  # buildInput lib dirs, and with LLVM 24 the rocm_check_target_ids probe does a
+  # full --hip-link with $LDFLAGS, so a bare -lcblas empties the target list
+  # ("Unsupported target gfx1151 by compiler").
   env.LDFLAGS =
-    "-Wl,--as-needed -lzstd" + lib.optionalString (buildTests || buildBenchmarks) " -lcblas";
+    "-Wl,--as-needed -lzstd"
+    + lib.optionalString (buildTests || buildBenchmarks) " -L${amd-blis}/lib -lcblas";
   env.TENSILE_ROCM_ASSEMBLER_PATH = "${stdenv.cc}/bin/clang++";
 
   cmakeFlags = [
@@ -152,12 +156,6 @@ stdenv.mkDerivation (finalAttrs: {
     substituteInPlace clients/CMakeLists.txt \
       --replace-fail "if ( NOT WIN32 )" "if(OFF)" \
       --replace-fail "else() # WIN32" "elseif(OFF)"
-  ''
-  # Fixes sh: line 1: /usr/bin/diff: No such file or directory
-  # /build/source/clients/gtest/../include/testing_logging.hpp:1117: Failure
-  + lib.optionalString buildTests ''
-    substituteInPlace clients/include/testing_logging.hpp \
-      --replace-fail "/usr/bin/diff" "${lib.getExe' diffutils "diff"}"
   '';
 
   postInstall =
