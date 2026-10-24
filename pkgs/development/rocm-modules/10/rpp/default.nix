@@ -36,11 +36,12 @@ stdenv.mkDerivation (finalAttrs: {
   };
   sourceRoot = "${finalAttrs.src.name}/projects/rpp";
 
-  patches = lib.optionals useCPU [
-    # can be removed when upgrading past this PR
-    # https://github.com/ROCm/rocm-libraries/pull/10042
-    ./fix-imports-cpu.patch
-  ];
+  # api/rppdefs.h includes <half.hpp> but HALF::half is linked PRIVATE, so
+  # targets built against rpp (the in-tree test_rpp_backend_macro) cannot find it.
+  postPatch = ''
+    sed -i 's|^\(set_target_properties(''${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)\)$|target_link_libraries(''${PROJECT_NAME} PUBLIC HALF::half)\n\1|' CMakeLists.txt
+    grep -q 'PUBLIC HALF::half' CMakeLists.txt
+  '';
 
   nativeBuildInputs = [
     cmake
