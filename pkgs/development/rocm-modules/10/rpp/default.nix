@@ -38,9 +38,11 @@ stdenv.mkDerivation (finalAttrs: {
 
   # api/rppdefs.h includes <half.hpp> but HALF::half is linked PRIVATE, so
   # targets built against rpp (the in-tree test_rpp_backend_macro) cannot find it.
+  # BUILD_INTERFACE keeps HALF::half out of the installed rpp-targets.cmake,
+  # where consumers like mivisionx could not resolve it.
   postPatch = ''
-    sed -i 's|^\(set_target_properties(''${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)\)$|target_link_libraries(''${PROJECT_NAME} PUBLIC HALF::half)\n\1|' CMakeLists.txt
-    grep -q 'PUBLIC HALF::half' CMakeLists.txt
+    sed -i 's|^\(set_target_properties(''${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)\)$|target_link_libraries(''${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:HALF::half>)\n\1|' CMakeLists.txt
+    grep -q 'PUBLIC $<BUILD_INTERFACE:HALF::half>' CMakeLists.txt
   '';
 
   nativeBuildInputs = [
